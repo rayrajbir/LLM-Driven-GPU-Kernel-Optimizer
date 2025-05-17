@@ -6,113 +6,125 @@ A research-grade prototype that uses NLP (via LLMs) to generate and optimize CUD
 
 ## 🚀 Project Goals
 
-- 🗣️ Accept natural language input like:
+* 🗣️ Accept natural language input like:
+
   > "Optimize this kernel for matrix multiplication with shared memory and warp-level primitives"
 
-- 🤖 Use an LLM (like FLAN-T5 or OpenAI) to:
-  - Interpret the optimization request
-  - Suggest kernel transformations or parameters
-  - Optionally generate new CUDA code
+* 🤖 Use an LLM (like FLAN-T5 or OpenAI) to:
 
-- ⚙️ Compile the CUDA kernel using `nvcc` and analyze with LLVM passes.
+  * Interpret the optimization request
+  * Suggest kernel transformations or parameters
+  * Optionally generate new CUDA code
 
-- 📊 Provide hooks for performance tuning and benchmarking.
+* ⚙️ Compile the CUDA kernel using `nvcc` and analyze with LLVM passes.
+
+* 📊 Provide hooks for performance tuning and benchmarking.
 
 ---
----
+
 ## 🧪 Requirements
 
 ### Python
-- `transformers`
-- `torch`
-- `openai` *(optional)*
+
+* `transformers`
+* `torch`
+* `openai` *(optional)*
 
 Install with:
+
 ```bash
 pip install -r requirements.txt
-
-###System
-CUDA Toolkit (nvcc)
-
-LLVM (v10+)
-
-CMake (v3.10+)
-
-
-⚙️ Build & Run
-1. 🧠 Run NLP Assistant
-bash
-Copy
-Edit
-python src/main.py
-You'll be prompted to enter a natural language optimization request.
-
-2. 🛠️ Compile CUDA Code
-bash
-Copy
-Edit
-cd src/cuda
-nvcc kernels.cu -o ../../build/vectorAdd
-3. 🔬 Compile LLVM Optimizer (Optional)
-bash
-Copy
-Edit
-mkdir -p build && cd build
-cmake ..
-make
-🤖 Example Use Case
-Input:
-"Optimize this for vector addition with large N, maximize occupancy."
-
-Output:
-
-rust
-Copy
-Edit
-Use 1024 threads per block, unroll loop for better performance, use __restrict__ pointers.
-This output can be used to generate or modify CUDA kernel code dynamically.
-
-🧩 Key Components
-Component	Description
-- nlp_model.py	Transforms English requests into code-level suggestions
-- kernels.cu	Contains base CUDA kernels
-- optimizer.cpp	LLVM pass for analyzing generated IR
-- main.py	CLI pipeline: prompt → LLM → kernel transformation (WIP)
-
-🧠 Future Work
-🔄 Dynamic CUDA kernel generation via LLM
-
-🧬 Fine-tuned model for CUDA-specific optimization phrasing
-
-📊 Integrated benchmarking with nvprof or Nsight
-
-🌐 Web interface (Flask or Gradio)
-
-🧱 ML model for performance prediction (meta-scheduler idea)
-
-📜 License
-MIT License © 2025
-
-👥 Contributors
-🤖 GPT-4 + Human-in-the-loop
-
-💡 Your name here!
-
-🗨️ Contact
-Have feedback or want to collaborate? Open an issue or reach out!
-
-yaml
-Copy
-Edit
+```
 
 ---
 
-Let me know if you also want a `LICENSE`, `setup.py`, or GitHub-specific files like `CONTRIBUTING.md`.
+### System
 
+* **CUDA Toolkit** (with `nvcc`)
+* **LLVM** (v10+)
+* **CMake** (v3.10+)
 
+---
 
+## 📁 Project Structure
 
+```
+LLVM-CUDA-NLP/
+├── models/                  # LLM interfaces and prompt templates
+├── kernels/                 # CUDA kernel sources
+├── llvm_passes/            # LLVM IR manipulation and analysis passes
+├── benchmarks/             # Performance tests and metrics
+├── utils/                  # Utilities for I/O, compilation, logging
+├── main.py                 # Main CLI entry point
+├── requirements.txt        # Python dependencies
+└── README.md               # Project documentation
+```
 
+---
 
+## ⚙️ Usage Example
 
+```bash
+python main.py \
+  --prompt "Optimize for 2D convolution with shared memory and minimal bank conflicts" \
+  --input-kernel kernels/conv.cu \
+  --output-kernel kernels/conv_optimized.cu
+```
 
+You can also use the OpenAI API for enhanced interpretation:
+
+```bash
+python main.py --use-openai --api-key <your-key> [...]
+```
+
+---
+
+## 🔍 Features
+
+* LLM-powered prompt interpretation
+* Auto-suggestion of CUDA best practices (e.g., loop unrolling, memory coalescing)
+* LLVM IR analysis hooks (e.g., register pressure, instruction counts)
+* Integration with performance profilers like Nsight
+* Extensible for reinforcement learning-based tuning (future)
+
+---
+
+## 📈 Benchmarking
+
+Benchmark utilities provided in `benchmarks/`:
+
+```bash
+python benchmarks/benchmark_runner.py --kernel kernels/conv_optimized.cu
+```
+
+Results include:
+
+* Execution time
+* Occupancy
+* Warp efficiency
+* Shared memory utilization
+
+---
+
+## 🤝 Contributing
+
+We welcome PRs and ideas! To contribute:
+
+1. Fork the repository
+2. Create a new branch
+3. Submit a pull request with a clear description
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
+
+---
+
+## 🙌 Acknowledgments
+
+* OpenAI for GPT APIs
+* Hugging Face Transformers
+* NVIDIA CUDA Toolkit
+* LLVM community

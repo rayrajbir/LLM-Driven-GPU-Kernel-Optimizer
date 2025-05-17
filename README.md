@@ -19,26 +19,6 @@ A research-grade prototype that uses NLP (via LLMs) to generate and optimize CUD
 - 📊 Provide hooks for performance tuning and benchmarking.
 
 ---
-
-## 📁 Project Structure
-
-llvm-cuda-nlp/
-├── src/
-│ ├── main.py # Main Python interface
-│ ├── cuda/
-│ │ ├── kernels.cu # Sample CUDA kernel
-│ │ └── CMakeLists.txt
-│ ├── llvm/
-│ │ ├── optimizer.cpp # LLVM analysis/optimization pass
-│ │ └── CMakeLists.txt
-├── models/
-│ └── nlp_model.py # NLP interface using HuggingFace Transformers
-├── build/ # LLVM/CUDA build output
-├── CMakeLists.txt # Top-level CMake build file
-├── requirements.txt # Python dependencies
-└── README.md
-
-
 ---
 ## 🧪 Requirements
 
@@ -94,10 +74,10 @@ This output can be used to generate or modify CUDA kernel code dynamically.
 
 🧩 Key Components
 Component	Description
-nlp_model.py	Transforms English requests into code-level suggestions
-kernels.cu	Contains base CUDA kernels
-optimizer.cpp	LLVM pass for analyzing generated IR
-main.py	CLI pipeline: prompt → LLM → kernel transformation (WIP)
+- nlp_model.py	Transforms English requests into code-level suggestions
+- kernels.cu	Contains base CUDA kernels
+- optimizer.cpp	LLVM pass for analyzing generated IR
+- main.py	CLI pipeline: prompt → LLM → kernel transformation (WIP)
 
 🧠 Future Work
 🔄 Dynamic CUDA kernel generation via LLM

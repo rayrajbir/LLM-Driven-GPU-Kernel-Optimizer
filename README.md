@@ -137,12 +137,12 @@ __global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
 
 ## 📌 Roadmap
 
-- [ ] Upload custom kernels via UI
-- [ ] Optimization diff view (original vs optimized)
-- [ ] Auto-tuning + multi-GPU support
-- [ ] LLM chat integration for optimization explanation
-- [ ] Support for more complex GPU algorithms (reduction, scan, etc.)
-- [ ] Integration with popular DL frameworks (PyTorch, TensorFlow)
+- Upload custom kernels via UI
+- Optimization diff view (original vs optimized)
+- Auto-tuning + multi-GPU support
+- LLM chat integration for optimization explanation
+- Support for more complex GPU algorithms (reduction, scan, etc.)
+- Integration with popular DL frameworks (PyTorch, TensorFlow)
 
 ## 🤝 Contributing
 

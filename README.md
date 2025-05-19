@@ -1,130 +1,161 @@
-# 🧠 LLVM-CUDA-NLP: LLM-Driven GPU Kernel Optimizer
+# LLM-Accelerated CUDA Kernel Optimizer
 
-A research-grade prototype that uses NLP (via LLMs) to generate and optimize CUDA GPU kernels, compiled with LLVM for performance analysis. This project bridges high-level natural language requests with low-level GPU code using a combination of transformers, CUDA, and LLVM IR passes.
+An intelligent CUDA kernel optimization system powered by LLM-assisted transformations. This tool helps GPU developers improve code efficiency through automated optimization strategies, backed by performance benchmarking and visualization.
 
----
+## ✨ Features
 
-## 🚀 Project Goals
+* ✅ Natural language prompts for CUDA optimization
+* ✅ Multiple optimization strategies:
+  * Shared memory utilization
+  * Loop unrolling
+  * Thread coarsening
+  * Memory access patterns
+* ✅ Dual interfaces: CLI & Gradio web UI
+* ✅ Execution time benchmarking & performance visualization
+* ✅ Auto-generated optimized CUDA kernels
+* ✅ Comprehensive performance reports (JSON/CSV) and charts (PNG)
 
-* 🗣️ Accept natural language input like:
+## 🗂️ Project Structure
 
-  > "Optimize this kernel for matrix multiplication with shared memory and warp-level primitives"
+```
+.
+├── src/
+│   ├── kernels/
+│   │   └── vector_add_runner.cu   # Base CUDA kernel
+│   ├── ui/
+│   │   ├── cli.py                 # CLI pipeline for optimization
+│   │   └── web_app.py             # Gradio web UI interface
+│   ├── profiler/
+│   │   └── profiler.py            # Benchmark & chart generator
+│   └── __init__.py
+├── results/
+│   ├── report_vector_add_runner_*.json   # Performance reports
+│   ├── execution_time_vector_add_runner_*.png   # Charts
+├── .gradio/
+│   └── flagged/
+│       └── dataset1.csv           # Gradio logging output
+├── requirements.txt
+└── README.md
+```
 
-* 🤖 Use an LLM (like FLAN-T5 or OpenAI) to:
+## ⚙️ Installation
 
-  * Interpret the optimization request
-  * Suggest kernel transformations or parameters
-  * Optionally generate new CUDA code
+### Prerequisites
 
-* ⚙️ Compile the CUDA kernel using `nvcc` and analyze with LLVM passes.
+- Python 3.8+
+- CUDA Toolkit
+- NVIDIA GPU with CUDA support
 
-* 📊 Provide hooks for performance tuning and benchmarking.
+### Setup
 
----
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/llm-cuda-optimizer.git
+   cd llm-cuda-optimizer
+   ```
 
-## 🧪 Requirements
+2. Create a virtual environment:
+   ```bash
+   python -m venv op.env
+   source op.env/bin/activate  # On Windows: op.env\Scripts\activate
+   ```
 
-### Python
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-* `transformers`
-* `torch`
-* `openai` *(optional)*
+4. Verify CUDA is installed:
+   ```bash
+   nvcc --version
+   nvidia-smi
+   ```
 
-Install with:
+## 🚀 Usage
+
+### 🔧 CLI Mode
+
+Run optimizations directly from the command line:
 
 ```bash
-pip install -r requirements.txt
+python src/ui/cli.py --src src/kernels/vector_add_runner.cu --opt auto --benchmark
 ```
 
----
+**Optional flags:**
+- `--report`: Save performance report in JSON format
+- `--exe`: Execute transformed kernel and compare with original
+- `--opt <strategy>`: Apply a specific optimization (e.g., `shared_memory`, `loop_unroll`)
 
-### System
+### 🌐 Gradio Web UI
 
-* **CUDA Toolkit** (with `nvcc`)
-* **LLVM** (v10+)
-* **CMake** (v3.10+)
-
----
-
-## 📁 Project Structure
-
-```
-LLVM-CUDA-NLP/
-├── models/                  # LLM interfaces and prompt templates
-├── kernels/                 # CUDA kernel sources
-├── llvm_passes/            # LLVM IR manipulation and analysis passes
-├── benchmarks/             # Performance tests and metrics
-├── utils/                  # Utilities for I/O, compilation, logging
-├── main.py                 # Main CLI entry point
-├── requirements.txt        # Python dependencies
-└── README.md               # Project documentation
-```
-
----
-
-## ⚙️ Usage Example
+Launch the web interface for interactive optimization:
 
 ```bash
-python main.py \
-  --prompt "Optimize for 2D convolution with shared memory and minimal bank conflicts" \
-  --input-kernel kernels/conv.cu \
-  --output-kernel kernels/conv_optimized.cu
+python src/ui/web_app.py
 ```
 
-You can also use the OpenAI API for enhanced interpretation:
+Visit: http://127.0.0.1:7860
 
-```bash
-python main.py --use-openai --api-key <your-key> [...]
+Try prompts like:
+- "Optimize using shared memory"
+- "Use shared memory and unroll loops"
+- "Optimize memory access patterns and thread utilization"
+
+## 📦 Output
+
+The tool generates several outputs to help you analyze optimizations:
+
+- Transformed CUDA kernel files in `src/kernels/`
+- Performance report JSONs in `results/`
+- Execution time comparison charts as PNG
+- CSV logs from Gradio UI at `.gradio/flagged/`
+
+## 🧪 Sample Kernel
+
+Example kernel in `src/kernels/vector_add_runner.cu`:
+
+```cpp
+__global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < N) C[i] = A[i] + B[i];
+}
 ```
 
----
+## 🔍 Advanced Use Cases
 
-## 🔍 Features
+- **Custom Kernel Optimization**: Submit your own CUDA kernels for optimization
+- **Strategy Chaining**: Apply multiple optimization techniques in sequence
+- **Performance Analysis**: Compare execution times across different strategies
+- **LLM-guided Optimization**: Get natural language explanations for optimization choices
 
-* LLM-powered prompt interpretation
-* Auto-suggestion of CUDA best practices (e.g., loop unrolling, memory coalescing)
-* LLVM IR analysis hooks (e.g., register pressure, instruction counts)
-* Integration with performance profilers like Nsight
-* Extensible for reinforcement learning-based tuning (future)
+## 🧠 Troubleshooting
 
----
+- Make sure matplotlib is installed for chart generation
+- Use `sys.executable` in web_app.py for correct Python environment
+- Ensure PYTHONPATH is set to project root when calling subprocess
+- Check CUDA compatibility with: `python -c "import torch; print(torch.cuda.is_available())"`
 
-## 📈 Benchmarking
+## 📌 Roadmap
 
-Benchmark utilities provided in `benchmarks/`:
-
-```bash
-python benchmarks/benchmark_runner.py --kernel kernels/conv_optimized.cu
-```
-
-Results include:
-
-* Execution time
-* Occupancy
-* Warp efficiency
-* Shared memory utilization
-
----
+- [ ] Upload custom kernels via UI
+- [ ] Optimization diff view (original vs optimized)
+- [ ] Auto-tuning + multi-GPU support
+- [ ] LLM chat integration for optimization explanation
+- [ ] Support for more complex GPU algorithms (reduction, scan, etc.)
+- [ ] Integration with popular DL frameworks (PyTorch, TensorFlow)
 
 ## 🤝 Contributing
 
-We welcome PRs and ideas! To contribute:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
-2. Create a new branch
-3. Submit a pull request with a clear description
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
----
+## 📧 Contact
 
-## 📜 License
+Your Name - rajbirray701@gmail.com
 
-This project is licensed under the MIT License. See `LICENSE` for details.
-
----
-
-## 🙌 Acknowledgments
-
-* OpenAI for GPT APIs
-* Hugging Face Transformers
-* NVIDIA CUDA Toolkit
-* LLVM community
+Project Link: [https://github.com/rayrajbir/llm-cuda-optimizer](https://github.com/rayrajbir/llm-cuda-optimizer)

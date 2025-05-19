@@ -86,7 +86,7 @@ python src/ui/cli.py --src src/kernels/vector_add_runner.cu --opt auto --benchma
 - `--exe`: Execute transformed kernel and compare with original
 - `--opt <strategy>`: Apply a specific optimization (e.g., `shared_memory`, `loop_unroll`)
 
-### 🌐 Gradio Web UI
+### 🌐 Gradio Web UI (In Progress)
 
 Launch the web interface for interactive optimization:
 

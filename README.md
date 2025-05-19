@@ -158,4 +158,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Your Name - rajbirray701@gmail.com
 
-Project Link: [https://github.com/rayrajbir/llm-cuda-optimizer](https://github.com/rayrajbir/llm-cuda-optimizer)
+Project Link: [https://github.com/rayrajbir/llm-cuda-optimizer](https://github.com/rayrajbir/LLM-Driven-GPU-Kernel-Optimizer.git)

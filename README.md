@@ -99,7 +99,7 @@ python src/ui/cli_patched.py --src src/kernels/vector_add_runner.cu --opt auto -
 Launch the interface:
 
 ```bash
-python src/ui/app.py
+python app.py
 ```
 
 Visit: [http://localhost:5000](http://localhost:5000)

@@ -1,0 +1,19 @@
+{
+  "kernel": "vector_add_runner",
+  "timestamp": "2025-05-20 16:03:49",
+  "results": {
+    "baseline": 1.86653,
+    "shared_memory": 1.08995,
+    "unroll": 0.711136,
+    "memory_coalescing": 1.05773,
+    "register": 0.78544,
+    "all_combined": 0.988992
+  },
+  "speedups": {
+    "shared_memory": 1.7124913986880133,
+    "unroll": 2.62471594744184,
+    "memory_coalescing": 1.7646563867905798,
+    "register": 2.3764132206151967,
+    "all_combined": 1.8873054584870252
+  }
+}

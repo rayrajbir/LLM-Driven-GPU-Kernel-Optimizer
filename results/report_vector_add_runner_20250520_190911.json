@@ -1,0 +1,14 @@
+{
+  "kernel": "vector_add_runner",
+  "timestamp": "2025-05-20 19:09:11",
+  "results": {
+    "baseline": 51.0433
+  },
+  "speedups": {},
+  "kernel_features": {
+    "has_global_kernel": true,
+    "has_loops": true,
+    "has_array_access": true,
+    "has_thread_indexing": true
+  }
+}

@@ -1,118 +1,148 @@
-# LLM-Accelerated CUDA Kernel Optimizer
+# LLVM-CUDA Optimizer (Flask Edition)
 
-An intelligent CUDA kernel optimization system powered by LLM-assisted transformations. This tool helps GPU developers improve code efficiency through automated optimization strategies, backed by performance benchmarking and visualization.
+An LLVM-accelerated, LLM-guided CUDA kernel optimizer with a robust Flask web interface. This tool empowers GPU developers to automatically transform and optimize CUDA code using techniques like shared memory, loop unrolling, and memory coalescing—backed by benchmarking and insightful visualizations.
+
+---
 
 ## ✨ Features
 
-* ✅ Natural language prompts for CUDA optimization
-* ✅ Multiple optimization strategies:
-  * Shared memory utilization
-  * Loop unrolling
-  * Thread coarsening
-  * Memory access patterns
-* ✅ Dual interfaces: CLI & Gradio web UI
-* ✅ Execution time benchmarking & performance visualization
-* ✅ Auto-generated optimized CUDA kernels
-* ✅ Comprehensive performance reports (JSON/CSV) and charts (PNG)
+- 🤖 LLM-assisted kernel analysis and optimization
+- ⚙️ Multiple optimization strategies:
+  - Shared memory utilization
+  - Loop unrolling
+  - Register usage tuning
+  - Memory coalescing
+- 🖥️ Web UI (Flask) + CLI mode
+- 📊 Benchmarking, speedup charts & execution-time plots
+- 📝 Auto-generated reports (JSON) and kernel diffs
+- 🧠 Interactive & intelligent optimization suggestions (auto mode)
+
+---
 
 ## 🗂️ Project Structure
 
 ```
 .
 ├── src/
-│   ├── kernels/
-│   │   └── vector_add_runner.cu   # Base CUDA kernel
+│   ├── kernels/                # CUDA kernels (original & transformed)
 │   ├── ui/
-│   │   ├── cli.py                 # CLI pipeline for optimization
-│   │   └── web_app.py             # Gradio web UI interface
-│   ├── profiler/
-│   │   └── profiler.py            # Benchmark & chart generator
-│   └── __init__.py
-├── results/
-│   ├── report_vector_add_runner_*.json   # Performance reports
-│   ├── execution_time_vector_add_runner_*.png   # Charts
-├── .gradio/
-│   └── flagged/
-│       └── dataset1.csv           # Gradio logging output
+│   │   └── cli.py      # CLI entrypoint
+│   │   
+│   ├── profiler/              # Benchmarking & chart generation
+│   │   └── profiler.py
+├── results/                   # JSON reports, PNG charts
+│   ├── execution_time_*.png
+│   ├── speedup_*.png
+│   └── report_*.json
+├── templates/                 # Flask templates (HTML)
+│   ├── index.html
+│   └── results.html
 ├── requirements.txt
 └── README.md
+└── app.py              # Flask-based web interface
 ```
+
+---
 
 ## ⚙️ Installation
 
 ### Prerequisites
 
 - Python 3.8+
-- CUDA Toolkit
-- NVIDIA GPU with CUDA support
+- CUDA Toolkit with nvcc
+- NVIDIA GPU with compute capability
 
 ### Setup
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/llm-cuda-optimizer.git
-   cd llm-cuda-optimizer
-   ```
+```bash
+git clone https://github.com/your-username/llvm-cuda-optimizer.git
+cd llvm-cuda-optimizer
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv op.env
-   source op.env/bin/activate  # On Windows: op.env\Scripts\activate
-   ```
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+pip install -r requirements.txt
+```
 
-4. Verify CUDA is installed:
-   ```bash
-   nvcc --version
-   nvidia-smi
-   ```
+Check your CUDA environment:
+
+```bash
+nvcc --version
+nvidia-smi
+```
+
+---
 
 ## 🚀 Usage
 
 ### 🔧 CLI Mode
 
-Run optimizations directly from the command line:
-
 ```bash
-python src/ui/cli.py --src src/kernels/vector_add_runner.cu --opt auto --benchmark
+python src/ui/cli_patched.py --src src/kernels/your_kernel.cu --opt all --benchmark --report
 ```
 
-**Optional flags:**
-- `--report`: Save performance report in JSON format
-- `--exe`: Execute transformed kernel and compare with original
-- `--opt <strategy>`: Apply a specific optimization (e.g., `shared_memory`, `loop_unroll`)
+Common options:
+- `--src <file>`: Input CUDA kernel
+- `--opt`: Optimization strategy (`shared_memory`, `unroll`, `register`, `memory_coalescing`, `auto`, `all`)
+- `--benchmark`: Compare execution time with baseline
+- `--report`: Output JSON + PNG charts
+- `--interactive`: Get suggestions & choose interactively
 
-### 🌐 Gradio Web UI (In Progress)
-
-Launch the web interface for interactive optimization:
+Example:
 
 ```bash
-python src/ui/web_app.py
+python src/ui/cli_patched.py --src src/kernels/vector_add_runner.cu --opt auto --benchmark --report
 ```
 
-Visit: http://127.0.0.1:7860
+### 🌐 Web App (Flask)
 
-Try prompts like:
-- "Optimize using shared memory"
-- "Use shared memory and unroll loops"
-- "Optimize memory access patterns and thread utilization"
+Launch the interface:
 
-## 📦 Output
+```bash
+python src/ui/app.py
+```
 
-The tool generates several outputs to help you analyze optimizations:
+Visit: [http://localhost:5000](http://localhost:5000)
 
-- Transformed CUDA kernel files in `src/kernels/`
-- Performance report JSONs in `results/`
-- Execution time comparison charts as PNG
-- CSV logs from Gradio UI at `.gradio/flagged/`
+You can:
+- Upload a custom .cu file
+- Choose optimizations interactively
+- View speedup and execution time charts
+- Download the performance report (JSON)
+
+---
+
+## 📈 Output Example
+
+The tool produces:
+- ✅ Transformed kernels: src/kernels/<name>_<opt>.cu
+- ✅ Benchmarked reports: results/report_<kernel>_<timestamp>.json
+- ✅ Execution time chart: results/execution_time_<kernel>.png
+- ✅ Speedup chart: results/speedup_<kernel>.png
+
+Example output (from report):
+
+```json
+"results": {
+  "baseline": 1.866,
+  "shared_memory": 1.089,
+  "unroll": 0.711,
+  "register": 0.785,
+  "all_combined": 0.988
+},
+"speedups": {
+  "shared_memory": 1.71,
+  "unroll": 2.62,
+  "register": 2.37,
+  "all_combined": 1.88
+}
+```
+
+---
 
 ## 🧪 Sample Kernel
 
-Example kernel in `src/kernels/vector_add_runner.cu`:
+Located at: `src/kernels/vector_add_runner.cu`
 
 ```cpp
 __global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
@@ -121,41 +151,45 @@ __global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
 }
 ```
 
-## 🔍 Advanced Use Cases
+---
 
-- **Custom Kernel Optimization**: Submit your own CUDA kernels for optimization
-- **Strategy Chaining**: Apply multiple optimization techniques in sequence
-- **Performance Analysis**: Compare execution times across different strategies
-- **LLM-guided Optimization**: Get natural language explanations for optimization choices
+## 🧠 Tips & Troubleshooting
 
-## 🧠 Troubleshooting
+- Kernels without loops or __global__ may be skipped during transformation
+- Use `--interactive` to get suggestions when you're unsure
+- Charts only generate if benchmark + report flags are used
+- Make sure `nvcc` is in your system path
+- Use `sys.executable` in subprocess for Python path consistency (web app)
 
-- Make sure matplotlib is installed for chart generation
-- Use `sys.executable` in web_app.py for correct Python environment
-- Ensure PYTHONPATH is set to project root when calling subprocess
-- Check CUDA compatibility with: `python -c "import torch; print(torch.cuda.is_available())"`
+---
 
-## 📌 Roadmap
+## 🛣️ Roadmap
 
-- Upload custom kernels via UI
-- Optimization diff view (original vs optimized)
-- Auto-tuning + multi-GPU support
-- LLM chat integration for optimization explanation
-- Support for more complex GPU algorithms (reduction, scan, etc.)
-- Integration with popular DL frameworks (PyTorch, TensorFlow)
+- [ ] Visual diff view (original vs optimized kernel)
+- [ ] Multi-kernel queue in UI
+- [ ] LLM explanation of applied optimizations
+- [ ] Docker support & cloud deployment
+- [ ] PyTorch kernel export hooks
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions!
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+```bash
+git checkout -b feat/your-feature
+# Make changes
+git commit -m "Add your feature"
+git push origin feat/your-feature
+```
 
-## 📧 Contact
+Then open a PR 🚀
 
-Your Name - rajbirray701@gmail.com
+---
 
-Project Link: [https://github.com/rayrajbir/llm-cuda-optimizer](https://github.com/rayrajbir/LLM-Driven-GPU-Kernel-Optimizer.git)
+## 📬 Contact
+
+Maintainer: Rajbir Ray  
+Email: rajbirray701@gmail.com  
+GitHub: https://github.com/rayrajbir/LLVM-CUDA-GPU-Kernel-Optimizer.git

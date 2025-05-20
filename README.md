@@ -165,11 +165,11 @@ __global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
 
 ## 🛣️ Roadmap
 
-- [ ] Visual diff view (original vs optimized kernel)
-- [ ] Multi-kernel queue in UI
-- [ ] LLM explanation of applied optimizations
-- [ ] Docker support & cloud deployment
-- [ ] PyTorch kernel export hooks
+- Visual diff view (original vs optimized kernel)
+- Multi-kernel queue in UI
+- LLM explanation of applied optimizations
+- Docker support & cloud deployment
+- PyTorch kernel export hooks
 
 ---
 

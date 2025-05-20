@@ -6,7 +6,7 @@ An LLVM-accelerated, LLM-guided CUDA kernel optimizer with a robust Flask web in
 
 ## ✨ Features
 
-- 🤖 LLM-assisted kernel analysis and optimization
+- 🤖 LLM-assisted kernel analysis and optimization (under progress)
 - ⚙️ Multiple optimization strategies:
   - Shared memory utilization
   - Loop unrolling
